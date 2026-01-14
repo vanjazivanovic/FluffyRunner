@@ -11,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     public int[] bonesPerLevel = { 10, 20, 30 }; // ciljevi po nivou
     private int currentLevel = 0;
+    public int CurrentLevel => currentLevel;
+
 
     void Start()
     {
@@ -52,6 +54,8 @@ public class GameManager : MonoBehaviour
 
         // Menja pozadinu
         UpdateBackground();
+        foreach (var o in GameObject.FindGameObjectsWithTag("Obstacle"))
+            Destroy(o);
 
         // Ubrzava psa
         player.speed += 2f;
