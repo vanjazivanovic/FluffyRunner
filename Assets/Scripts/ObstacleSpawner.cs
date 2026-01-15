@@ -2,49 +2,124 @@
 
 public class ObstacleSpawner : MonoBehaviour
 {
-    public GameObject obstaclePrefab;
-    public Transform[] spawnPoints;
+    [Header("Prefabs by theme")]
+    public GameObject cityCanPrefab;              // City_TrashCan
+
+    public GameObject[] forestObstaclePrefabs;    // mushroom, Forest_Bird, ...
+    public GameObject[] beachObstaclePrefabs;     // Beach_Umbrella, Beach_Ball, ...
+
+    [Header("Spawn points")]
+    public Transform[] citySpawnPoints;           // CitySpawnPoint_*
+
+    public Transform[] forestGroundSpawnPoints;   // pečurke i ostalo na zemlji
+    public Transform[] forestAirSpawnPoints;      // ptice u vazduhu
+
+    public Transform[] beachGroundSpawnPoints;    // suncobran, lopta... na pesku
+
+    [Header("Spawn settings")]
     public float spawnInterval = 3f;
     public int maxActiveObstacles = 2;
 
     [Range(0f, 1f)]
     public float spawnChance = 0.4f;
 
+    [Header("References")]
     public GameManager gameManager;
     public BoneCollector boneCollector;
 
-    private void Start()
+    private bool isInvoking = false;
+
+    void OnEnable()
     {
-        InvokeRepeating(nameof(SpawnObstacleLoop), 0f, spawnInterval);
+        if (!isInvoking)
+        {
+            InvokeRepeating(nameof(SpawnObstacleLoop), spawnInterval, spawnInterval);
+            isInvoking = true;
+        }
+    }
+
+    void OnDisable()
+    {
+        CancelInvoke(nameof(SpawnObstacleLoop));
+        isInvoking = false;
     }
 
     void SpawnObstacleLoop()
     {
         if (gameManager == null || boneCollector == null) return;
-        if (gameManager.CurrentLevel != 0) return;
-        if (boneCollector.bonesCollected >= 10) return;
 
+        // max prepreka (sve zajedno)
         int currentObstacles = GameObject.FindGameObjectsWithTag("Obstacle").Length;
+        if (currentObstacles >= maxActiveObstacles) return;
 
-        if (currentObstacles < maxActiveObstacles)
+        // random šansa
+        if (Random.value > spawnChance) return;
+
+        int level = gameManager.CurrentLevel;
+
+        // GRAD (0)
+        if (level == 0)
         {
-            if (Random.value > spawnChance) return;
-            SpawnObstacle();
+            // koristi cilj nivoa umesto hardkodovanog 10
+            if (boneCollector.bonesCollected >= boneCollector.bonesToWin) return;
+
+            SpawnFrom(cityCanPrefab, citySpawnPoints);
+            return;
         }
+
+        // ŠUMA (1)
+        if (level == 1)
+        {
+            SpawnForestObstacle();
+            return;
+        }
+
+        // PLAŽA (2)
+        if (level == 2)
+        {
+            SpawnBeachObstacle();
+            return;
+        }
+
+        // Ostalo: trenutno ništa
     }
 
-    void SpawnObstacle()
+    void SpawnForestObstacle()
     {
-        if (spawnPoints.Length == 0 || obstaclePrefab == null) return;
+        if (forestObstaclePrefabs == null || forestObstaclePrefabs.Length == 0) return;
 
-        Transform spawnPoint =
-            spawnPoints[Random.Range(0, spawnPoints.Length)];
+        GameObject prefab = forestObstaclePrefabs[Random.Range(0, forestObstaclePrefabs.Length)];
+        if (prefab == null) return;
 
-        GameObject obstacle = Instantiate(
-            obstaclePrefab,
-            spawnPoint.position,
-            Quaternion.identity
-        );
+        // Ptice u vazduh, ostalo na zemlju
+        if (prefab.name.Contains("Bird"))
+            SpawnFrom(prefab, forestAirSpawnPoints);
+        else
+            SpawnFrom(prefab, forestGroundSpawnPoints);
+    }
+
+    void SpawnBeachObstacle()
+    {
+        if (beachObstaclePrefabs == null || beachObstaclePrefabs.Length == 0) return;
+
+        GameObject prefab = beachObstaclePrefabs[Random.Range(0, beachObstaclePrefabs.Length)];
+        if (prefab == null) return;
+
+        SpawnFrom(prefab, beachGroundSpawnPoints);
+    }
+
+    void SpawnFrom(GameObject prefab, Transform[] points)
+    {
+        if (prefab == null || points == null || points.Length == 0) return;
+
+        Transform spawnPoint = points[Random.Range(0, points.Length)];
+        Instantiate(prefab, spawnPoint.position, Quaternion.identity);
     }
 }
+
+
+
+
+
+
 

@@ -1,30 +1,57 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Backgrounds")]
     public GameObject cityBackground;
     public GameObject forestBackground;
     public GameObject beachBackground;
 
+    [Header("Obstacle Spawners (dodeli u Inspector-u)")]
+    public GameObject cityObstacleSpawner;   // spawnuje kante
+    public GameObject forestObstacleSpawner; // spawnuje prepreke u šumi
+    public GameObject beachObstacleSpawner;  // spawnuje prepreke na plaži
+
+    [Header("References")]
     public PlayerController player;
     public BoneCollector boneCollector;
 
-    public int[] bonesPerLevel = { 10, 20, 30 }; // ciljevi po nivou
+    [Header("Level goals (po nivou, jer resetuješ bonesCollected)")]
+    public int[] bonesPerLevel = { 10, 20, 999 };
+    // 0: grad (10)
+    // 1: šuma (20)
+    // 2: plaža (999 = "beskrajno", promeni ako želiš cilj)
+
     private int currentLevel = 0;
     public int CurrentLevel => currentLevel;
 
+    private bool gameFinished = false;
 
     void Start()
     {
+        currentLevel = 0;
+        gameFinished = false;
+
+        boneCollector.bonesCollected = 0;
         boneCollector.bonesToWin = bonesPerLevel[currentLevel];
+        boneCollector.UpdateBonesUI();
+
         UpdateBackground();
+        UpdateSpawners();
+
+        // spawn prve kosti
+        if (boneCollector.spawner != null)
+            boneCollector.spawner.SpawnBone();
     }
 
     void Update()
     {
+        if (gameFinished) return;
+
         if (boneCollector.bonesCollected >= bonesPerLevel[currentLevel])
         {
             NextLevel();
+            return; // zaštita da ne preskoči nivo u istom frame-u
         }
     }
 
@@ -32,50 +59,92 @@ public class GameManager : MonoBehaviour
     {
         currentLevel++;
 
+        // Ako nema više nivoa
         if (currentLevel >= bonesPerLevel.Length)
         {
-            // Kraj igre
-            Debug.Log("Igra zavr�ena!");
-            player.speed = 0f;
+            FinishGame();
             return;
         }
 
         // Resetuje broj skupljenih kostiju za novi nivo
         boneCollector.bonesCollected = 0;
 
-        // Postavlja novi cilj za trenutni nivo
+        // Postavlja novi cilj
         boneCollector.bonesToWin = bonesPerLevel[currentLevel];
 
-        // A�urira tekst
+        // UI
         boneCollector.UpdateBonesUI();
 
-        // Spawn-uje prvu kost za novi nivo
-        boneCollector.spawner.SpawnBone();
-
-        // Menja pozadinu
-        UpdateBackground();
+        // Obriši stare prepreke
         foreach (var o in GameObject.FindGameObjectsWithTag("Obstacle"))
             Destroy(o);
 
-        // Ubrzava psa
-        player.speed += 2f;
+        // Promeni pozadinu + upali samo odgovarajući spawner
+        UpdateBackground();
+        UpdateSpawners();
+
+        // Spawn prvu kost za novi nivo
+        if (boneCollector.spawner != null)
+            boneCollector.spawner.SpawnBone();
+
+        // ✅ Ubrzava psa (veće ubrzanje na plaži)
+        if (player != null)
+        {
+            if (currentLevel == 2)      // ulazak na plažu
+                player.speed += 4f;     // jače ubrzanje
+            else
+                player.speed += 2f;     // normalno ubrzanje (npr. ulazak u šumu)
+        }
+    }
+
+    void FinishGame()
+    {
+        gameFinished = true;
+        Debug.Log("Igra završena!");
+
+        if (player != null)
+            player.speed = 0f;
+
+        // ugasi spawner-e
+        if (cityObstacleSpawner) cityObstacleSpawner.SetActive(false);
+        if (forestObstacleSpawner) forestObstacleSpawner.SetActive(false);
+        if (beachObstacleSpawner) beachObstacleSpawner.SetActive(false);
     }
 
     void UpdateBackground()
     {
-        cityBackground.SetActive(currentLevel == 0);
-        forestBackground.SetActive(currentLevel == 1);
-        beachBackground.SetActive(currentLevel == 2);
+        if (cityBackground) cityBackground.SetActive(currentLevel == 0);
+        if (forestBackground) forestBackground.SetActive(currentLevel == 1);
+        if (beachBackground) beachBackground.SetActive(currentLevel == 2);
     }
+
+    void UpdateSpawners()
+    {
+        if (cityObstacleSpawner) cityObstacleSpawner.SetActive(currentLevel == 0);
+        if (forestObstacleSpawner) forestObstacleSpawner.SetActive(currentLevel == 1);
+        if (beachObstacleSpawner) beachObstacleSpawner.SetActive(currentLevel == 2);
+    }
+
     void ResetBackgrounds()
     {
-        foreach (Transform bg in cityBackground.GetComponentsInChildren<Transform>())
-            bg.localPosition = new Vector3(bg.GetComponent<SpriteRenderer>().bounds.size.x * bg.GetSiblingIndex(), 0f, 0f);
+        if (cityBackground) ResetBGGroup(cityBackground.transform);
+        if (forestBackground) ResetBGGroup(forestBackground.transform);
+        if (beachBackground) ResetBGGroup(beachBackground.transform);
+    }
 
-        foreach (Transform bg in forestBackground.GetComponentsInChildren<Transform>())
-            bg.localPosition = new Vector3(bg.GetComponent<SpriteRenderer>().bounds.size.x * bg.GetSiblingIndex(), 0f, 0f);
+    void ResetBGGroup(Transform root)
+    {
+        int i = 0;
+        foreach (Transform t in root.GetComponentsInChildren<Transform>())
+        {
+            if (t == root) continue;
+            var sr = t.GetComponent<SpriteRenderer>();
+            if (sr == null) continue;
 
-        foreach (Transform bg in beachBackground.GetComponentsInChildren<Transform>())
-            bg.localPosition = new Vector3(bg.GetComponent<SpriteRenderer>().bounds.size.x * bg.GetSiblingIndex(), 0f, 0f);
+            float w = sr.bounds.size.x;
+            t.localPosition = new Vector3(w * i, 0f, 0f);
+            i++;
+        }
     }
 }
+
