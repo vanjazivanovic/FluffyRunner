@@ -15,7 +15,7 @@ public class BoneCollector : MonoBehaviour
 
         if (spawner != null)
         {
-            spawner.collector = this;   // ➜ dodaj ovu liniju
+            spawner.collector = this;   // dodaj ovu liniju
             spawner.SpawnBone();        // ovo već imaš
         }
     }

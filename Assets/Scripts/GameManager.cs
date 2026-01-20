@@ -22,6 +22,13 @@ public class GameManager : MonoBehaviour
     // 1: šuma (20)
     // 2: plaža (999 = "beskrajno", promeni ako želiš cilj)
 
+    [Header("Game Over UI")]
+    public GameObject gameOverPanel;
+
+    [Header("Canvases")]
+    public GameObject mainMenuCanvas;
+    public GameObject gameplayCanvas;
+
     private int currentLevel = 0;
     public int CurrentLevel => currentLevel;
 
@@ -42,6 +49,13 @@ public class GameManager : MonoBehaviour
         // spawn prve kosti
         if (boneCollector.spawner != null)
             boneCollector.spawner.SpawnBone();
+
+
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        Time.timeScale = 1f;
+
     }
 
     void Update()
@@ -110,6 +124,49 @@ public class GameManager : MonoBehaviour
         if (forestObstacleSpawner) forestObstacleSpawner.SetActive(false);
         if (beachObstacleSpawner) beachObstacleSpawner.SetActive(false);
     }
+    public void GameOver()
+    {
+        if (gameFinished) return;
+
+        gameFinished = true;
+
+        Debug.Log("GAME OVER");
+
+        // zaustavi psa
+        if (player != null)
+            player.speed = 0f;
+
+        // ugasi spawner-e
+        if (cityObstacleSpawner) cityObstacleSpawner.SetActive(false);
+        if (forestObstacleSpawner) forestObstacleSpawner.SetActive(false);
+        if (beachObstacleSpawner) beachObstacleSpawner.SetActive(false);
+
+        // prikaži GAME OVER
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+
+        Time.timeScale = 0f; // ZAUSTAVLJA IGRU
+    }
+
+    public void BackToMainMenu()
+    {
+        Time.timeScale = 1f;
+
+        // ugasi gameplay UI
+        if (gameplayCanvas != null)
+            gameplayCanvas.SetActive(false);
+
+        // upali main menu
+        if (mainMenuCanvas != null)
+            mainMenuCanvas.SetActive(true);
+
+        // ugasi GAME OVER panel
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(false);
+
+        Debug.Log("Back to Main Menu");
+    }
+
 
     void UpdateBackground()
     {
