@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+
+
+
 
 public class GameManager : MonoBehaviour
 {
+    
     [Header("Backgrounds")]
     public GameObject cityBackground;
     public GameObject forestBackground;
@@ -55,6 +60,8 @@ public class GameManager : MonoBehaviour
             gameOverPanel.SetActive(false);
 
         Time.timeScale = 1f;
+
+       
 
     }
 
@@ -150,21 +157,9 @@ public class GameManager : MonoBehaviour
 
     public void BackToMainMenu()
     {
+               
         Time.timeScale = 1f;
-
-        // ugasi gameplay UI
-        if (gameplayCanvas != null)
-            gameplayCanvas.SetActive(false);
-
-        // upali main menu
-        if (mainMenuCanvas != null)
-            mainMenuCanvas.SetActive(true);
-
-        // ugasi GAME OVER panel
-        if (gameOverPanel != null)
-            gameOverPanel.SetActive(false);
-
-        Debug.Log("Back to Main Menu");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
     }
 
 
