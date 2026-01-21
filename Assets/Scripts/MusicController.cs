@@ -3,7 +3,7 @@
 public class MusicController : MonoBehaviour
 {
     public AudioSource audioSource;
-    public AudioClip gameMusic; // ovo je tvoj mp3/wav fajl
+    public AudioClip gameMusic; // ovo je fajl za muziku
 
     public void PlayMusic()
     {

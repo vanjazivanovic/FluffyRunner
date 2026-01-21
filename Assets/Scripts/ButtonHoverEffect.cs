@@ -20,7 +20,7 @@ public class ButtonHoverEffect : MonoBehaviour,
 
     void Update()
     {
-        // ciljna skala (normalna ili hover)
+        // ciljna skala 
         Vector3 targetScale = isHovering
             ? originalScale * hoverScale
             : originalScale;

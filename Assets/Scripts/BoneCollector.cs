@@ -5,8 +5,8 @@ public class BoneCollector : MonoBehaviour
 {
     public TMP_Text bonesText;
     public int bonesCollected = 0;
-    public int bonesToWin;  // ovo će nam menjati GameManager po nivou
-    public BoneSpawner spawner;
+    public int bonesToWin;  // ovo će  menjati GameManager po nivou, koliko treba za pobedu
+    public BoneSpawner spawner; // ko stvara  kost
 
     void Start()
     {
@@ -15,8 +15,8 @@ public class BoneCollector : MonoBehaviour
 
         if (spawner != null)
         {
-            spawner.collector = this;   // dodaj ovu liniju
-            spawner.SpawnBone();        // ovo već imaš
+            spawner.collector = this;   
+            spawner.SpawnBone();        
         }
     }
 
@@ -25,12 +25,19 @@ public class BoneCollector : MonoBehaviour
     public void CollectBone()
     {
         bonesCollected++;
-        UpdateBonesUI();
-        spawner.SpawnBone();
+        UpdateBonesUI(); 
+        spawner.SpawnBone();// nova kost
     }
 
     public void UpdateBonesUI()
     {
-        bonesText.text = "Score: " + bonesCollected + "/" + bonesToWin;
+        if (FindObjectOfType<GameManager>().CurrentLevel == 2)
+        {
+            bonesText.text = "Score: " + bonesCollected;
+        }
+        else
+        {
+            bonesText.text = "Score: " + bonesCollected + "/" + bonesToWin;
+        }
     }
 }

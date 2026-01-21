@@ -23,9 +23,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Level goals (po nivou, jer resetuješ bonesCollected)")]
     public int[] bonesPerLevel = { 10, 20, 999 };
-    // 0: grad (10)
-    // 1: šuma (20)
-    // 2: plaža (999 = "beskrajno", promeni ako želiš cilj)
+   
 
     [Header("Game Over UI")]
     public GameObject gameOverPanel;
@@ -48,8 +46,8 @@ public class GameManager : MonoBehaviour
         boneCollector.bonesToWin = bonesPerLevel[currentLevel];
         boneCollector.UpdateBonesUI();
 
-        UpdateBackground();
-        UpdateSpawners();
+        UpdateBackground(); // pali grad
+        UpdateSpawners();// pali grad spawner
 
         // spawn prve kosti
         if (boneCollector.spawner != null)
@@ -71,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         if (boneCollector.bonesCollected >= bonesPerLevel[currentLevel])
         {
-            NextLevel();
+            NextLevel(); // ako su sakupio dovoljno predji na sl nivo
             return; // zaštita da ne preskoči nivo u istom frame-u
         }
     }
@@ -93,14 +91,14 @@ public class GameManager : MonoBehaviour
         // Postavlja novi cilj
         boneCollector.bonesToWin = bonesPerLevel[currentLevel];
 
-        // UI
+        
         boneCollector.UpdateBonesUI();
 
         // Obriši stare prepreke
         foreach (var o in GameObject.FindGameObjectsWithTag("Obstacle"))
             Destroy(o);
 
-        // Promeni pozadinu + upali samo odgovarajući spawner
+        // Promeni pozadinu i upali samo odgovarajući spawner
         UpdateBackground();
         UpdateSpawners();
 
@@ -108,13 +106,13 @@ public class GameManager : MonoBehaviour
         if (boneCollector.spawner != null)
             boneCollector.spawner.SpawnBone();
 
-        // ✅ Ubrzava psa (veće ubrzanje na plaži)
+        //Ubrzanje
         if (player != null)
         {
-            if (currentLevel == 2)      // ulazak na plažu
-                player.speed += 4f;     // jače ubrzanje
+            if (currentLevel == 2)      
+                player.speed += 4f;    
             else
-                player.speed += 2f;     // normalno ubrzanje (npr. ulazak u šumu)
+                player.speed += 2f;    
         }
     }
 
@@ -159,7 +157,7 @@ public class GameManager : MonoBehaviour
     {
                
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); 
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // resetuje igricu
     }
 
 

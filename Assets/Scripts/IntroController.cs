@@ -6,7 +6,7 @@ public class IntroController : MonoBehaviour
     public VideoPlayer videoPlayer;
     public GameObject menuUI; 
     public MusicController musicController;
-    public GameObject scoreText; // dodaj ovo polje
+    public GameObject scoreText; 
 
     void Start()
     {

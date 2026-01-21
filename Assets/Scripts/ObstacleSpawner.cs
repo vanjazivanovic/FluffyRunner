@@ -3,18 +3,18 @@
 public class ObstacleSpawner : MonoBehaviour
 {
     [Header("Prefabs by theme")]
-    public GameObject cityCanPrefab;              // City_TrashCan
+    public GameObject cityCanPrefab;              
 
-    public GameObject[] forestObstaclePrefabs;    // mushroom, Forest_Bird, ...
-    public GameObject[] beachObstaclePrefabs;     // Beach_Umbrella, Beach_Ball, ...
+    public GameObject[] forestObstaclePrefabs;  
+    public GameObject[] beachObstaclePrefabs;     
 
     [Header("Spawn points")]
-    public Transform[] citySpawnPoints;           // CitySpawnPoint_*
+    public Transform[] citySpawnPoints;           
 
     public Transform[] forestGroundSpawnPoints;   // pečurke i ostalo na zemlji
     public Transform[] forestAirSpawnPoints;      // ptice u vazduhu
 
-    public Transform[] beachGroundSpawnPoints;    // suncobran, lopta... na pesku
+    public Transform[] beachGroundSpawnPoints;    // suncobran na pesku
 
     [Header("Spawn settings")]
     public float spawnInterval = 3f;
@@ -57,31 +57,31 @@ public class ObstacleSpawner : MonoBehaviour
 
         int level = gameManager.CurrentLevel;
 
-        // GRAD (0)
+       
         if (level == 0)
         {
-            // koristi cilj nivoa umesto hardkodovanog 10
+           
             if (boneCollector.bonesCollected >= boneCollector.bonesToWin) return;
 
             SpawnFrom(cityCanPrefab, citySpawnPoints);
             return;
         }
 
-        // ŠUMA (1)
+      
         if (level == 1)
         {
             SpawnForestObstacle();
             return;
         }
 
-        // PLAŽA (2)
+       
         if (level == 2)
         {
             SpawnBeachObstacle();
             return;
         }
 
-        // Ostalo: trenutno ništa
+     
     }
 
     void SpawnForestObstacle()

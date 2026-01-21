@@ -6,15 +6,15 @@ public class BoneCleanup : MonoBehaviour
 
     void Start()
     {
-        mainCamera = Camera.main;
+        mainCamera = Camera.main;// uzima glavnu kameru 
     }
 
     void Update()
     {
-        // leva ivica kamere
+        //  racuna levu ivicu kamere
         float leftEdge = mainCamera.transform.position.x - mainCamera.orthographicSize * mainCamera.aspect;
 
-        // ako je kost izašla levo iz vidika → uništi je
+        //unisti ako je kost izašla levo iz vidika
         if (transform.position.x < leftEdge)
         {
             Destroy(gameObject);

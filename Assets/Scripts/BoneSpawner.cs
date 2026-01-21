@@ -3,7 +3,7 @@
 public class BoneSpawner : MonoBehaviour
 {
     public GameObject bonePrefab;
-    public Transform[] spawnPoints;
+    public Transform[] spawnPoints; // mesto gd e kost moze da se pojavi
     public float spawnInterval = 2f;   // koliko sekundi između pojavljivanja
     public int maxActiveBones = 3;     // maksimalan broj kostiju istovremeno
     public BoneCollector collector;

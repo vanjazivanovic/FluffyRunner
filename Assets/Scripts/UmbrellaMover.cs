@@ -7,7 +7,7 @@ public class UmbrellaMover : MonoBehaviour
 
     void Update()
     {
-        // kretanje ulevo (ka psu)
+        // kretanje ulevo
         transform.Translate(Vector2.left * speed * Time.deltaTime);
 
         // uništi kad izađe sa leve strane
