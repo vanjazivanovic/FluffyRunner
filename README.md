@@ -1,6 +1,6 @@
 # FluffyRunner
 
-FluffyRunner je 2D endless runner igra razvijena u **Unity 6** okruženju korišćenjem programskog jezika **C#**. Igrač upravlja psom koji prolazi kroz tri različita tematska okruženja, sakuplja kosti i izbegava prepreke. Kako igra napreduje, uvode se nove prepreke i povećava se brzina kretanja, čime igra postaje sve izazovnija.
+FluffyRunner je 2D endless runner igra razvijena u **Unity 6** okruženju korišćenjem programskog jezika **C#**. Igrač upravlja psom koji prolazi kroz tri različita tematska okruženja, sakuplja kosti i izbegava prepreke. Kako igra napreduje, uvode se nove prepreke i povećava se brzina kretanja, čime igra postaje sve izazovnija. Tokom igre reprodukuju se zvučni efekti koji dodatno doprinose atmosferi i iskustvu igranja.
 
 ---
 
@@ -60,6 +60,7 @@ Na ovom nivou brzina psa je dodatno povećana, čime igra postaje zahtevnija.
 - Povećanje brzine psa nakon prelaska na novi nivo
 - Promena pozadine u zavisnosti od nivoa
 - Detekcija sudara sa preprekama
+- Zvučni efekti koji prate gameplay i interakcije u igri
 - Uvodna scena kreirana u Blender-u
 
 ---
