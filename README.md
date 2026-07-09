@@ -8,9 +8,6 @@ FluffyRunner je 2D endless runner igra razvijena u **Unity 6** okruženju koriš
 
 Početni ekran igre modelovan je u **Blender-u**, a zatim integrisan u Unity kao uvodna scena sa dugmetom **START** za pokretanje igre.
 
-> <img width="843" height="380" alt="image" src="https://github.com/user-attachments/assets/3820765c-fe20-4016-8acf-e25374cbcb37" />
-> <img width="842" height="382" alt="image" src="https://github.com/user-attachments/assets/fe1423fa-3006-490d-af9e-a2176119c86e" />
-
 
 ---
 
@@ -26,9 +23,6 @@ Cilj igre je sakupljanje kostiju uz uspešno izbegavanje prepreka. Nakon ispunja
 **Prepreke:**
 - Kanta za smeće
 
-> <img width="841" height="381" alt="image" src="https://github.com/user-attachments/assets/ae0e4d82-678d-4897-b5ec-97eb4aabc0a9" />
-> <img width="839" height="384" alt="image" src="https://github.com/user-attachments/assets/12fa2a84-227a-4133-a679-e338efc83469" />
-
 
 
 ---
@@ -42,8 +36,6 @@ Cilj igre je sakupljanje kostiju uz uspešno izbegavanje prepreka. Nakon ispunja
 - Pečurka
 - Ptica
 
-> <img width="838" height="382" alt="WhatsApp Image 2026-07-09 at 21 45 37" src="https://github.com/user-attachments/assets/f94a82e0-9802-4348-be26-a87479314372" />
-
 
 ---
 
@@ -55,9 +47,6 @@ Plaža predstavlja poslednji nivo igre.
 - Suncobran
 
 Na ovom nivou brzina psa je dodatno povećana, čime igra postaje zahtevnija.
-
-> <img width="838" height="382" alt="WhatsApp Image 2026-07-09 at 21 45 37" src="https://github.com/user-attachments/assets/b24fe2cf-ec5f-41b5-92b7-5f9b846615ec" />
-
 
 ---
 
@@ -128,8 +117,4 @@ git clone https://github.com/vanjazivanovic/FluffyRunner.git
 4. Pokrenuti igru klikom na dugme **Play** u Unity Editor-u.
 
 ---
-
-
-# Repozitorijum
-
 https://github.com/vanjazivanovic/FluffyRunner
