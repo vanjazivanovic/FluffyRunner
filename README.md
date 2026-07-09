@@ -115,6 +115,3 @@ git clone https://github.com/vanjazivanovic/FluffyRunner.git
 2. Otvoriti projekat u **Unity Hub-u**.
 3. Otvoriti glavnu scenu projekta.
 4. Pokrenuti igru klikom na dugme **Play** u Unity Editor-u.
-
----
-https://github.com/vanjazivanovic/FluffyRunner
